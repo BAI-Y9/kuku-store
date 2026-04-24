@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1000, initial-scale=1.0">
+<title>数字人模特展示册 · KUKU STORE</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  html { scroll-behavior: smooth; }
+  
+  body {
+    width: 900px;
+    margin: 0 auto;
+    background: #faf9f7;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: #2d2d2d;
+    padding-bottom: 60px;
+  }
+
+  /* ===== 工作室品牌栏 ===== */
+  .brand-bar {
+    background: #1a1a2e;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .brand-left {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .brand-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 3px;
+    font-family: "Georgia", "Times New Roman", serif;
+  }
+  .brand-name span {
+    color: #e94560;
+  }
+  .brand-line {
+    width: 1px;
+    height: 18px;
+    background: rgba(255,255,255,0.15);
+  }
+  .brand-tagline {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+  .brand-right {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 2px;
+  }
+
+  /* ===== 头部 ===== */
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 40px 32px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(233,69,96,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: "";
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(102,126,234,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header-content { position: relative; z-index: 1; }
+  .header h1 { font-size: 26px; color: #fff; font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; }
+  .header h1 span { color: #e94560; }
+  .header p { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 18px; }
+  .header-badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .badge { display: inline-block; padding: 5px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+  .badge-1 { background: rgba(233,69,96,0.25); color: #ff8a9e; border: 1px solid rgba(233,69,96,0.35); }
+  .badge-2 { background: rgba(102,126,234,0.22); color: #a8b4ff; border: 1px solid rgba(102,126,234,0.35); }
+  .badge-3 { background: rgba(72,219,251,0.18); color: #7ee8fa; border: 1px solid rgba(72,219,251,0.3); }
+
+  /* ===== 导航 ===== */
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    padding: 10px 24px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-bar::-webkit-scrollbar { height: 0; }
+  .nav-label { font-size: 11px; color: #999; white-space: nowrap; flex-shrink: 0; }
+  .nav-tags { display: flex; gap: 8px; flex-wrap: nowrap; }
+  .nav-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    white-space: nowrap;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    flex-shrink: 0;
+  }
+  .nav-tag:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+  .tag-asia    { background: linear-gradient(135deg,#fff0f0,#ffe8e8); color:#c0392b; border-color:#f5c6c6; }
+  .tag-sea     { background: linear-gradient(135deg,#fff8f0,#ffefdf); color:#d35400; border-color:#f5d8be; }
+  .tag-eu      { background: linear-gradient(135deg,#f0f4ff,#e8eeff); color:#2980b9; border-color:#c0d0f0; }
+  .tag-af      { background: linear-gradient(135deg,#f5f0ff,#ede8ff); color:#8e44ad; border-color:#d4c4f0; }
+  .tag-old     { background: linear-gradient(135deg,#f8f8f8,#f0f0f0); color:#666; border-color:#ddd; }
+  .tag-kid     { background: linear-gradient(135deg,#f0fff5,#e0ffe8); color:#27ae60; border-color:#b8e8cc; }
+
+  /* ===== 提示 ===== */
+  .tip-bar {
+    margin: 16px 24px;
+    background: #fff;
+    border: 1px solid #e8e0db;
+    border-radius: 14px;
+    padding: 14px 20px;
+    font-size: 13px;
+    color: #777;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* ===== 大区分隔线 ===== */
+  .region-separator {
+    height: 6px;
+    background: linear-gradient(90deg, #f0ece8, #e8e0db, #f0ece8);
+    margin: 0;
+  }
+
+  /* ===== 大区域标题 ===== */
+  .region-block { padding: 0; }
+  .region-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 28px 24px 18px;
+  }
+  .region-header::after { content: ""; flex: 1; height: 1px; background: linear-gradient(to right, #e8e0db, transparent); }
+  .region-icon { font-size: 28px; line-height: 1; }
+  .region-title-group {}
+  .region-name { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+  .region-name.asia   { color: #c0392b; }
+  .region-name.sea    { color: #d35400; }
+  .region-name.eu     { color: #2980b9; }
+  .region-name.af     { color: #8e44ad; }
+  .region-name.old    { color: #777; }
+  .region-name.kid    { color: #27ae60; }
+  .region-desc { font-size: 12px; color: #aaa; margin-top: 2px; }
+
+  /* ===== 分类区块 ===== */
+  .category-block { padding: 0 24px 24px; }
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #e8e0db;
+  }
+  .cat-emoji { font-size: 18px; }
+  .cat-name { font-size: 15px; font-weight: 700; color: #333; }
+  .cat-hint { font-size: 11px; color: #aaa; margin-left: auto; }
+
+  .model-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .model-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+    border: 1px solid #f0ece8;
+  }
+  .model-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+
+  .card-image {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: #f8f6f3;
+    position: relative;
+  }
+  .card-image img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.5s ease; }
+  .model-card:hover .card-image img { transform: scale(1.03); }
+
+  /* ===== Logo水印（内联SVG，可靠显示） ===== */
+  .card-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    background-repeat: repeat;
+    background-size: 280px 100px;
+    opacity: 0.08;
+    /* 用SVG data-uri绘制半透明水印文字，不依赖外部文件 */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='100' viewBox='0 0 280 100'%3E%3Ctext x='50%25' y='42%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-size='18' font-weight='700' fill='white' fill-opacity='1'%3EKUKU STORE%3C/text%3E%3Ctext x='50%25' y='68%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-size='12' font-weight='500' fill='white' fill-opacity='1'%3EAI电商视觉·枯枯个人工作室%3C/text%3E%3C/svg%3E");
+  }
+
+  .card-gender-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .tag-female { background: rgba(233,69,96,0.88); color: #fff; }
+  .tag-male   { background: rgba(74,108,247,0.88); color: #fff; }
+
+  .card-info { padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; }
+  .card-style-name { font-size: 13px; font-weight: 600; color: #333; }
+  .card-id { font-size: 11px; color: #bbb; font-family: monospace; }
+
+  /* ===== 底部CTA ===== */
+  .footer {
+    margin: 32px 24px 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #e94560 100%);
+    border-radius: 20px;
+    padding: 36px;
+    text-align: center;
+    box-shadow: 0 12px 48px rgba(233,69,96,0.25);
+  }
+  .footer h3 { font-size: 20px; color: #fff; margin-bottom: 16px; }
+  .footer-steps { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  .step-box { background: rgba(255,255,255,0.15); padding: 12px 22px; border-radius: 14px; font-size: 14px; color: #fff; font-weight: 500; }
+  .footer-contact { margin-top: 20px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.15); }
+  .contact-hint { font-size: 12px; color: rgba(255,255,255,0.55); }
+  .contact-custom { font-size: 13px; color: rgba(255,255,255,0.85); margin-top: 8px; }
+
+  @media screen and (max-width: 900px) { body { width: 100%; } }
+</style>
+</head>
+<body>
+
+<!-- ===== 工作室品牌栏 ===== -->
+<div class="brand-bar">
+  <div class="brand-left">
+    <span class="brand-name">KUKU <span>STORE</span></span>
+    <span class="brand-line"></span>
+    <span class="brand-tagline">AI电商视觉 · 枯枯个人工作室</span>
+  </div>
+  <div class="brand-right">DIGITAL MODELS</div>
+</div>
+
+<!-- ===== 头部 ===== -->
+<div class="header">
+  <div class="header-content">
+    <h1>✨ 数字人<span>模特</span>展示册</h1>
+    <p>专业电商数字人模特服务 · 全地域全风格覆盖</p>
+    <div class="header-badges">
+      <span class="badge badge-1">全国籍覆盖</span>
+      <span class="badge badge-2">全年龄段</span>
+      <span class="badge badge-3">26种风格</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 可跳转导航 ===== -->
+<div class="nav-bar">
+  <span class="nav-label">跳转：</span>
+  <div class="nav-tags">
+    <a href="#youth-asia" class="nav-tag tag-asia">青年·东亚</a>
+    <a href="#youth-sea" class="nav-tag tag-sea">青年·东南亚</a>
+    <a href="#youth-eu" class="nav-tag tag-eu">青年·欧美</a>
+    <a href="#youth-af" class="nav-tag tag-af">青年·非洲</a>
+    <a href="#old" class="nav-tag tag-old">老年</a>
+    <a href="#kids" class="nav-tag tag-kid">儿童</a>
+  </div>
+</div>
+
+<!-- ===== 提示 ===== -->
+<div class="tip-bar">
+  下滑浏览全部风格，看中可直接告诉我分类名和性别或截图咨询哦~
+</div>
+
+<!-- ============================================================ -->
+<!--              青年·东亚（8种）                               -->
+<!-- ============================================================ -->
+
+<div class="region-block" id="youth-asia">
+  <div class="region-header">
+    <span class="region-icon">🏮</span>
+    <div class="region-title-group">
+      <div class="region-name asia">青年 · 东亚</div>
+      <div class="region-desc">中日韩面孔 · 电商客户首选</div>
+    </div>
+  </div>
+
+  <div class="category-block">
+
+    <!-- 氛围网感 -->
+    <div class="category-header"><span class="cat-emoji">📸</span><span class="cat-name">氛围网感</span><span class="cat-hint">情绪氛围拉满 · 种草内容营销</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\氛围网感-女.png" alt="氛围网感-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">氛围网感 · 女</span><span class="card-id">#01</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\氛围网感-男.png" alt="氛围网感-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">氛围网感 · 男</span><span class="card-id">#02</span></div></div>
+    </div>
+
+    <!-- 清冷素雅 -->
+    <div class="category-header"><span class="cat-emoji">❄️</span><span class="cat-name">清冷素雅</span><span class="cat-hint">清冷高级 · 低饱和色调 · 极简冷淡风</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\清冷素雅-女.png" alt="清冷素雅-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">清冷素雅 · 女</span><span class="card-id">#03</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\清冷素雅-男.png" alt="清冷素雅-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">清冷素雅 · 男</span><span class="card-id">#04</span></div></div>
+    </div>
+
+    <!-- 元气甜系 -->
+    <div class="category-header"><span class="cat-emoji">🍰</span><span class="cat-name">元气甜系</span><span class="cat-hint">阳光甜美 · 治愈系颜值 · 少女心产品</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\元气甜系-女.png" alt="元气甜系-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">元气甜系 · 女</span><span class="card-id">#05</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\元气甜系 -男.png" alt="元气甜系-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">元气甜系 · 男</span><span class="card-id">#06</span></div></div>
+    </div>
+
+    <!-- 韩系日常 -->
+    <div class="category-header"><span class="cat-emoji">✨</span><span class="cat-name">韩系日常</span><span class="cat-hint">韩式自然妆 · 温柔气质 · 美妆护肤</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\韩系日常-女.png" alt="韩系日常-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">韩系日常 · 女</span><span class="card-id">#07</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\韩系日常-男.png" alt="韩系日常-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">韩系日常 · 男</span><span class="card-id">#08</span></div></div>
+    </div>
+
+    <!-- 日系松弛 -->
+    <div class="category-header"><span class="cat-emoji">☕</span><span class="cat-name">日系松弛</span><span class="cat-hint">日杂质感 · 无修饰自然 · Cafe风/OOTD</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\日系松弛-女.png" alt="日系松弛-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">日系松弛 · 女</span><span class="card-id">#09</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\日系松弛-男.png" alt="日系松弛-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">日系松弛 · 男</span><span class="card-id">#10</span></div></div>
+    </div>
+
+    <!-- Y2K千禧 -->
+    <div class="category-header"><span class="cat-emoji">🎪</span><span class="cat-name">Y2K千禧</span><span class="cat-hint">复古未来主义 · Z世代 · 潮流单品</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\Y2k千禧-女.png" alt="Y2K千禧-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">Y2K千禧 · 女</span><span class="card-id">#11</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\Y2K千禧-男.png" alt="Y2K千禧-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">Y2K千禧 · 男</span><span class="card-id">#12</span></div></div>
+    </div>
+
+    <!-- 街头潮牌 -->
+    <div class="category-header"><span class="cat-emoji">🛹</span><span class="cat-name">街头潮牌</span><span class="cat-hint">个性张扬 · 态度十足 · 潮服球鞋配饰</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\街头潮牌-女.png" alt="街头潮牌-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">街头潮牌 · 女</span><span class="card-id">#13</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\街头潮牌-男.png" alt="街头潮牌-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">街头潮牌 · 男</span><span class="card-id">#14</span></div></div>
+    </div>
+
+    <!-- 高级冷感 -->
+    <div class="category-header"><span class="cat-emoji">❄️</span><span class="cat-name">高级冷感</span><span class="cat-hint">清冷高级脸 · 极简大气 · 大牌奢侈品</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\高级冷感-女.png" alt="高级冷感-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">高级冷感 · 女</span><span class="card-id">#15</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\高级冷感-男.png" alt="高级冷感-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">高级冷感 · 男</span><span class="card-id">#16</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="region-separator"></div>
+
+<!-- ============================================================ -->
+<!--              青年·东南亚（3种）                              -->
+<!-- ============================================================ -->
+
+<div class="region-block" id="youth-sea">
+  <div class="region-header">
+    <span class="region-icon">🌺</span>
+    <div class="region-title-group">
+      <div class="region-name sea">青年 · 东南亚</div>
+      <div class="region-desc">热带面孔 · 异域魅力 · 跨境电商热门</div>
+    </div>
+  </div>
+
+  <div class="category-block">
+
+    <!-- 泰式混血 -->
+    <div class="category-header"><span class="cat-emoji">🌺</span><span class="cat-name">泰式混血</span><span class="cat-hint">独特混血面孔 · 异域吸引力</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\泰式混血-女.png" alt="泰式混血-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">泰式混血 · 女</span><span class="card-id">#17</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\泰式混血-男.png" alt="泰式混血-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">泰式混血 · 男</span><span class="card-id">#18</span></div></div>
+    </div>
+
+    <!-- 海岛风情 -->
+    <div class="category-header"><span class="cat-emoji">🏖️</span><span class="cat-name">海岛风情</span><span class="cat-hint">度假休闲 · 自由随性 · 泳装防晒</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\海岛风情-女.png" alt="海岛风情-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">海岛风情 · 女</span><span class="card-id">#19</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\海岛风情-男.png" alt="海岛风情-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">海岛风情 · 男</span><span class="card-id">#20</span></div></div>
+    </div>
+
+    <!-- 轻奢名媛 / 轻奢绅士 -->
+    <div class="category-header"><span class="cat-emoji">💎</span><span class="cat-name">轻奢</span><span class="cat-hint">高端精致 · 名流气场 · 珠宝高定</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\轻奢名媛-女.png" alt="轻奢名媛-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">轻奢名媛 · 女</span><span class="card-id">#21</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\轻奢绅士-男.png" alt="轻奢绅士-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">轻奢绅士 · 男</span><span class="card-id">#22</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="region-separator"></div>
+
+<!-- ============================================================ -->
+<!--              青年·欧美（4种）                               -->
+<!-- ============================================================ -->
+
+<div class="region-block" id="youth-eu">
+  <div class="region-header">
+    <span class="region-icon">🗽</span>
+    <div class="region-title-group">
+      <div class="region-name eu">青年 · 欧美</div>
+      <div class="region-desc">西方面孔 · 国际化调性 · 出海品牌首选</div>
+    </div>
+  </div>
+
+  <div class="category-block">
+
+    <!-- 北欧极简 -->
+    <div class="category-header"><span class="cat-emoji">🤍</span><span class="cat-name">北欧极简</span><span class="cat-hint">斯堪的纳维亚美学 · 干净利落 · 家居极简</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\北欧极简-女.png" alt="北欧极简-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">北欧极简 · 女</span><span class="card-id">#23</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\北欧极简-男.png" alt="北欧极简-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">北欧极简 · 男</span><span class="card-id">#24</span></div></div>
+    </div>
+
+    <!-- ins网红 -->
+    <div class="category-header"><span class="cat-emoji">📸</span><span class="cat-name">Ins网红</span><span class="cat-hint">欧美社交平台流行风 · 高辨识度 · 流量感</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\ins网红-女.png" alt="ins网红-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">Ins网红 · 女</span><span class="card-id">#25</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\ins网红-男.png" alt="ins网红-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">Ins网红 · 男</span><span class="card-id">#26</span></div></div>
+    </div>
+
+    <!-- 学院休闲 -->
+    <div class="category-header"><span class="cat-emoji">📚</span><span class="cat-name">学院休闲</span><span class="cat-hint">知性青春 · 书卷气息 · 校园教育类</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\学院休闲-女.png" alt="学院休闲-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">学院休闲 · 女</span><span class="card-id">#27</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\学院休闲-男.png" alt="学院休闲-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">学院休闲 · 男</span><span class="card-id">#28</span></div></div>
+    </div>
+
+    <!-- 高街运动 -->
+    <div class="category-header"><span class="cat-emoji">🏃</span><span class="cat-name">高街运动</span><span class="cat-hint">活力动感 · 潮酷街头 · 运动潮牌户外</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\高街运动-女.png" alt="高街运动-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">高街运动 · 女</span><span class="card-id">#29</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\高街运动-男.png" alt="高街运动-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">高街运动 · 男</span><span class="card-id">#30</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="region-separator"></div>
+
+<!-- ============================================================ -->
+<!--              青年·非洲（3种）                               -->
+<!-- ============================================================ -->
+
+<div class="region-block" id="youth-af">
+  <div class="region-header">
+    <span class="region-icon">🌍</span>
+    <div class="region-title-group">
+      <div class="region-name af">青年 · 非洲</div>
+      <div class="region-desc">多元包容 · 国际化视觉 · 全球品牌推广</div>
+    </div>
+  </div>
+
+  <div class="category-block">
+
+    <!-- 民族风情 -->
+    <div class="category-header"><span class="cat-emoji">🏔️</span><span class="cat-name">民族风情</span><span class="cat-hint">异域特色 · 文化韵味 · 民族服饰文创</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\民族风情-女.png" alt="民族风情-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">民族风情 · 女</span><span class="card-id">#31</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\民族风情-男.png" alt="民族风情-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">民族风情 · 男</span><span class="card-id">#32</span></div></div>
+    </div>
+
+    <!-- 嘻哈街头 -->
+    <div class="category-header"><span class="cat-emoji">🎤</span><span class="cat-name">嘻哈街头</span><span class="cat-hint">Hip-Hop态度 · 酷炫前卫 · 潮牌青年文化</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\嘻哈街头-女.png" alt="嘻哈街头-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">嘻哈街头 · 女</span><span class="card-id">#33</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\嘻哈街头-男.png" alt="嘻哈街头-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">嘻哈街头 · 男</span><span class="card-id">#34</span></div></div>
+    </div>
+
+    <!-- 都市通勤 -->
+    <div class="category-header"><span class="cat-emoji">🏙️</span><span class="cat-name">都市通勤</span><span class="cat-hint">职场精英范 · 专业可靠 · 商务正装场景</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\都市通勤-女.png" alt="都市通勤-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">都市通勤 · 女</span><span class="card-id">#35</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\都市通勤-男.png" alt="都市通勤-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">都市通勤 · 男</span><span class="card-id">#36</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="region-separator"></div>
+
+<!-- ============================================================ -->
+<!--              老年（4个子分类）                              -->
+<!-- ============================================================ -->
+
+<div class="region-block" id="old">
+  <div class="region-header">
+    <span class="region-icon">🧓</span>
+    <div class="region-title-group">
+      <div class="region-name old">老年</div>
+      <div class="region-desc">成熟优雅 · 岁月沉淀 · 保健品养老产品</div>
+    </div>
+  </div>
+
+  <div class="category-block">
+
+    <!-- 老年-欧美 -->
+    <div class="category-header"><span class="cat-emoji">🎩</span><span class="cat-name">老年 · 欧美</span><span class="cat-hint">优雅岁月 · 成熟魅力 · 抗衰老高端养老</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\欧美老人-女.png" alt="欧美老人-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">欧美老人 · 女</span><span class="card-id">#37</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\欧美老人-男.png" alt="欧美老人-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">欧美老人 · 男</span><span class="card-id">#38</span></div></div>
+    </div>
+
+    <!-- 老年-东亚 -->
+    <div class="category-header"><span class="cat-emoji">🏮</span><span class="cat-name">老年 · 东亚</span><span class="cat-hint">稳重亲和 · 养生保健 · 家居品类</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\东亚老人-女.png" alt="东亚老人-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">东亚老人 · 女</span><span class="card-id">#39</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\东亚老人-男.png" alt="东亚老人-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">东亚老人 · 男</span><span class="card-id">#40</span></div></div>
+    </div>
+
+    <!-- 老年-东南亚 -->
+    <div class="category-header"><span class="cat-emoji">🏝️</span><span class="cat-name">老年 · 东南亚</span><span class="cat-hint">成熟稳重 · 亲和力强 · 养生保健</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\东南亚老人-女.png" alt="东南亚老人-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">东南亚老人 · 女</span><span class="card-id">#41</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\东南亚老人-男.png" alt="东南亚老人-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">东南亚老人 · 男</span><span class="card-id">#42</span></div></div>
+    </div>
+
+    <!-- 老年-非洲 -->
+    <div class="category-header"><span class="cat-emoji">🌍</span><span class="cat-name">老年 · 非洲</span><span class="cat-hint">成熟魅力 · 多元文化 · 国际市场推广</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\非洲老年人-女.png" alt="非洲老年人-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">非洲老人 · 女</span><span class="card-id">#43</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\非洲老年人-男.png" alt="非洲老年人-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">非洲老人 · 男</span><span class="card-id">#44</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="region-separator"></div>
+
+<!-- ============================================================ -->
+<!--              儿童（4个子分类）                              -->
+<!-- ============================================================ -->
+
+<div class="region-block" id="kids">
+  <div class="region-header">
+    <span class="region-icon">👶</span>
+    <div class="region-title-group">
+      <div class="region-name kid">儿童</div>
+      <div class="region-desc">活泼可爱 · 天然亲和力 · 童装母婴食品玩具</div>
+    </div>
+  </div>
+
+  <div class="category-block">
+
+    <!-- 儿童-欧美 -->
+    <div class="category-header"><span class="cat-emoji">👼</span><span class="cat-name">儿童 · 欧美</span><span class="cat-hint">国际化童模 · 西方审美 · 跨境童装出海</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\欧美儿童-女.png" alt="欧美儿童-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">欧美儿童 · 女</span><span class="card-id">#45</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\欧美儿童-男.png" alt="欧美儿童-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">欧美儿童 · 男</span><span class="card-id">#46</span></div></div>
+    </div>
+
+    <!-- 儿童-东亚 -->
+    <div class="category-header"><span class="cat-emoji">🧒</span><span class="cat-name">儿童 · 东亚</span><span class="cat-hint">通用儿童模特 · 亚洲面孔 · 国内童装母婴首选</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\儿童-女.png" alt="儿童-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">东亚儿童 · 女</span><span class="card-id">#47</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\儿童-男.png" alt="儿童-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">东亚儿童 · 男</span><span class="card-id">#48</span></div></div>
+    </div>
+
+    <!-- 儿童-东南亚 -->
+    <div class="category-header"><span class="cat-emoji">🏝️</span><span class="cat-name">儿童 · 东南亚</span><span class="cat-hint">热带童模 · 异域可爱 · 东南亚市场</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\东南亚儿童-女.png" alt="东南亚儿童-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">东南亚儿童 · 女</span><span class="card-id">#49</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\东南亚儿童-男.png" alt="东南亚儿童-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">东南亚儿童 · 男</span><span class="card-id">#50</span></div></div>
+    </div>
+
+    <!-- 儿童-非洲 -->
+    <div class="category-header"><span class="cat-emoji">🌍</span><span class="cat-name">儿童 · 非洲</span><span class="cat-hint">多元包容 · 国际化童模 · 跨境童装出海</span></div>
+    <div class="model-pair">
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\非洲儿童-女.png" alt="非洲儿童-女" loading="lazy"><span class="card-gender-tag tag-female">♀ 女</span></div><div class="card-info"><span class="card-style-name">非洲儿童 · 女</span><span class="card-id">#51</span></div></div>
+      <div class="model-card"><div class="card-image"><img src="D:\AI计划\模特展示库\非洲儿童-男.png" alt="非洲儿童-男" loading="lazy"><span class="card-gender-tag tag-male">♂ 男</span></div><div class="card-info"><span class="card-style-name">非洲儿童 · 男</span><span class="card-id">#52</span></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 底部CTA ===== -->
+<div class="footer">
+  <h3>🎯 选好了？三步下单</h3>
+  <div class="footer-steps">
+    <span class="step-box">① 告诉我分类名和性别</span>
+    <span class="step-box">② 发你的产品图</span>
+    <span class="step-box">③ 我确认细节后开做</span>
+  </div>
+  <div class="footer-contact">
+    <p class="contact-custom">其他形象需求？发参考图或带要求咨询即可</p>
+    <p class="contact-hint">微信直接沟通 · 随时接单</p>
+  </div>
+</div>
+
+</body>
+</html>
